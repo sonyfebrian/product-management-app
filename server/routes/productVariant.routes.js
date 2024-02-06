@@ -10,13 +10,33 @@ module.exports = function (app) {
     next();
   });
 
-  app.get("/api/v1/product-variants", controller.findAllProductVariants);
+  app.get(
+    "/api/v1/product-variants",
+    [authJwt.verifyToken],
+    controller.findAllProductVariants
+  );
 
-  app.get("/api/v1/product-variants/:id", controller.findOneProductVariant);
+  app.get(
+    "/api/v1/product-variants/:id",
+    [authJwt.verifyToken],
+    controller.findOneProductVariant
+  );
 
-  app.post("/api/v1/product-variants", controller.createProductVariant);
+  app.post(
+    "/api/v1/product-variants",
+    [authJwt.verifyToken],
+    controller.createProductVariant
+  );
 
-  app.put("/api/v1/product-variants/:id", controller.updateProductVariant);
+  app.put(
+    "/api/v1/product-variants/:id",
+    [authJwt.verifyToken],
+    controller.updateProductVariant
+  );
 
-  app.delete("/api/v1/product-variants/:id", controller.deleteProductVariant);
+  app.delete(
+    "/api/v1/product-variants/:id",
+    [authJwt.verifyToken],
+    controller.deleteProductVariant
+  );
 };

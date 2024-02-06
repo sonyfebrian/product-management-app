@@ -3,7 +3,6 @@ const Transaction = db.transaction;
 const TransactionDetail = db.transactionDetail;
 const ProductVariant = db.productVarian;
 
-// Create a new transaction
 exports.createTransaction = (req, res) => {
   const { transaction_no, total_amount, created_user } = req.body;
 
@@ -31,7 +30,6 @@ exports.createTransaction = (req, res) => {
     });
 };
 
-// Retrieve all transactions
 exports.getAllTransactions = (req, res) => {
   Transaction.findAll()
     .then((transactions) => {
@@ -93,84 +91,10 @@ exports.createTransactionDetail = (req, res) => {
         created_user,
       })
         .then((transactionDetail) => {
-          res
-            .status(201)
-            .send({
-              message: "Transaction detail created successfully",
-              transactionDetail,
-            });
-        })
-        .catch((err) => {
-          res.status(500).send({ message: err.message });
-        });
-    })
-    .catch((err) => {
-      res.status(500).send({ message: err.message });
-    });
-};
-
-// Find a single transaction by ID
-exports.getTransactionById = (req, res) => {
-  const id = req.params.id;
-
-  Transaction.findByPk(id)
-    .then((transaction) => {
-      if (!transaction) {
-        return res.status(404).send({ message: "Transaction not found" });
-      }
-      res.send(transaction);
-    })
-    .catch((err) => {
-      res.status(500).send({ message: err.message });
-    });
-};
-
-// Update a transaction by ID
-exports.updateTransactionById = (req, res) => {
-  const id = req.params.id;
-  const { transaction_no, total_amount, updated_user } = req.body;
-
-  Transaction.findByPk(id)
-    .then((transaction) => {
-      if (!transaction) {
-        return res.status(404).send({ message: "Transaction not found" });
-      }
-
-      transaction.transaction_no = transaction_no;
-      transaction.total_amount = total_amount;
-      transaction.updated_user = updated_user;
-
-      transaction
-        .save()
-        .then(() => {
-          res.send({
-            message: "Transaction updated successfully",
-            transaction,
+          res.status(201).send({
+            message: "Transaction detail created successfully",
+            transactionDetail,
           });
-        })
-        .catch((err) => {
-          res.status(500).send({ message: err.message });
-        });
-    })
-    .catch((err) => {
-      res.status(500).send({ message: err.message });
-    });
-};
-
-// Delete a transaction by ID
-exports.deleteTransactionById = (req, res) => {
-  const id = req.params.id;
-
-  Transaction.findByPk(id)
-    .then((transaction) => {
-      if (!transaction) {
-        return res.status(404).send({ message: "Transaction not found" });
-      }
-
-      transaction
-        .destroy()
-        .then(() => {
-          res.send({ message: "Transaction deleted successfully" });
         })
         .catch((err) => {
           res.status(500).send({ message: err.message });

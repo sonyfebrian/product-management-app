@@ -19,13 +19,4 @@ module.exports = function (app) {
   app.get("/api/v1/transactions-details", controller.getAllTransactionDetails);
 
   app.post("/api/v1/transactions-details", controller.createTransactionDetail);
-
-  // Find a single transaction by ID
-  app.get("/api/v1/transactions/:id", controller.getTransactionById);
-
-  // Update a transaction by ID
-  app.put("/api/v1/transactions/:id", controller.updateTransactionById);
-
-  // Delete a transaction by ID
-  app.delete("/api/v1/transactions/:id", controller.deleteTransactionById);
 };

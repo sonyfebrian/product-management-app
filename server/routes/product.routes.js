@@ -10,18 +10,33 @@ module.exports = function (app) {
     next();
   });
 
-  // Retrieve all products
-  app.get("/api/v1/products", productController.findAllProducts);
+  app.get(
+    "/api/v1/products",
+    [authJwt.verifyToken, authJwt.isAdmin],
+    productController.findAllProducts
+  );
 
-  // Retrieve a single product by id
-  app.get("/api/v1/products/:id", productController.findProductById);
+  app.get(
+    "/api/v1/products/:id",
+    [authJwt.verifyToken, authJwt.isAdmin],
+    productController.findProductById
+  );
 
-  // Create a new product
-  app.post("/api/v1/products", productController.createProduct);
+  app.post(
+    "/api/v1/products",
+    [authJwt.verifyToken, authJwt.isAdmin],
+    productController.createProduct
+  );
 
-  // Update a product by id
-  app.put("/api/v1/products/:id", productController.updateProductById);
+  app.put(
+    "/api/v1/products/:id",
+    [authJwt.verifyToken, authJwt.isAdmin],
+    productController.updateProductById
+  );
 
-  // Delete a product by id
-  app.delete("/api/v1/products/:id", productController.deleteProductById);
+  app.delete(
+    "/api/v1/products/:id",
+    [authJwt.verifyToken, authJwt.isAdmin],
+    productController.deleteProductById
+  );
 };

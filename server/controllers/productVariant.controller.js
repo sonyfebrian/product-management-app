@@ -1,26 +1,6 @@
 const db = require("../models");
 const ProductVariant = db.productVarian;
 const Product = db.product;
-// exports.createProductVariant = (req, res) => {
-//   ProductVariant.create({
-//     product_id: req.body.product_id,
-//     code: req.body.code,
-//     name: req.body.name,
-//     image_location: req.body.image_location,
-//     qty: req.body.qty,
-//     price: req.body.price,
-//     active: req.body.active,
-//     created_user: req.body.created_user,
-//   })
-//     .then((variant) => {
-//       res
-//         .status(201)
-//         .send({ message: "Product variant created successfully", variant });
-//     })
-//     .catch((err) => {
-//       res.status(500).send({ message: err.message });
-//     });
-// };
 
 exports.createProductVariant = (req, res) => {
   const {
@@ -34,19 +14,16 @@ exports.createProductVariant = (req, res) => {
     created_user,
   } = req.body;
 
-  // Check if product_id is empty
   if (!product_id) {
     return res.status(400).send({ message: "Product ID cannot be empty" });
   }
 
-  // Check if product_id is valid
   Product.findByPk(product_id)
     .then((product) => {
       if (!product) {
         return res.status(400).send({ message: "Invalid product ID" });
       }
 
-      // Create product variant
       ProductVariant.create({
         product_id,
         code,

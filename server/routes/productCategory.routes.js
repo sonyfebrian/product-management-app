@@ -10,22 +10,33 @@ module.exports = function (app) {
     next();
   });
 
-  app.get("/api/v1/products-categories", controller.findAllProductCategories);
+  app.get(
+    "/api/v1/products-categories",
+    [authJwt.verifyToken],
+    controller.findAllProductCategories
+  );
 
   app.get(
     "/api/v1/products-categories/:id",
+    [authJwt.verifyToken],
     controller.findProductCategoryById
   );
 
-  app.post("/api/v1/products-categories", controller.createProductCategory);
+  app.post(
+    "/api/v1/products-categories",
+    [authJwt.verifyToken],
+    controller.createProductCategory
+  );
 
   app.put(
     "/api/v1/products-categories/:id",
+    [authJwt.verifyToken],
     controller.updateProductCategoryById
   );
 
   app.delete(
     "/api/v1/products-categories/:id",
+    [authJwt.verifyToken],
     controller.deleteProductCategoryById
   );
 };
