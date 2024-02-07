@@ -59,10 +59,7 @@ const Login = () => {
             <div className="w-full bg-gradient-to-r from-rose-100 to-teal-100 lg:w-1/2 flex items-center justify-center">
 
                 <div className="max-w-md w-full p-6">
-                    <p className="mb-1 leading-relaxed">username administrator : admin</p>
-                    <p className="mb-1 leading-relaxed">password : admin123</p>
-                    <p className="mb-1 leading-relaxed">username customer : customer </p>
-                    <p className="mb-1 leading-relaxed">password : 123</p>
+
                     <h1 className="text-3xl font-semibold mb-6 text-black text-center">
                         Login
                     </h1>
