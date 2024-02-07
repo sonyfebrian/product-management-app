@@ -1,4 +1,5 @@
-import { GiHamburgerMenu } from "react-icons/gi";
+import { useState, useEffect } from "react";
+// import { GiHamburgerMenu } from "react-icons/gi";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -8,46 +9,90 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Link } from "react-router-dom";
-
+import IUser from "../types/user";
+import EventBus from "../common/EventBus";
+import * as AuthService from "../services/auth";
 
 
 const Navbar = () => {
+    const [showCustomerBoard, setShowCustomerBoard] = useState<boolean>(false);
+    const [showAdminBoard, setShowAdminBoard] = useState<boolean>(false);
+    const [currentUser, setCurrentUser] = useState<IUser | undefined>(undefined);
+
+    useEffect(() => {
+        const user = AuthService.getCurrentUser();
+
+        if (user) {
+            setCurrentUser(user);
+            setShowCustomerBoard(user.roles.includes("ROLE_CUSTOMER"));
+            setShowAdminBoard(user.roles.includes("ROLE_ADMINISTRATOR"));
+        }
+
+        EventBus.on("logout", logOut);
+
+        return () => {
+            EventBus.remove("logout", logOut);
+        };
+    }, []);
+
+
+    const logOut = () => {
+        AuthService.logout();
+        setShowCustomerBoard(false);
+        setShowAdminBoard(false);
+        setCurrentUser(undefined);
+    };
     return (
-        <><nav className="bg-blue-500 p-4 md:flex md:delil-antara md:item-center">
+        <>
+
+            <header className="bg-blue-500 text-white body-font">
+                <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+
+                    {showAdminBoard ? (
+
+                        <span className="ml-3 text-xl"> Welcome Admin </span>
+                    ) : (<span className="ml-3 text-xl"> Welcome Customer </span>)}
+                    <nav className="md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center">
+
+                        {showAdminBoard && (
+                            <>
+                                <Link to="home" className="mr-5 hover:text-gray-900">Home</Link>
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger className="mr-5 hover:text-gray-900" >Master Data</DropdownMenuTrigger>
+                                    <DropdownMenuContent>
+                                        <Link to="/product-categories"><DropdownMenuItem>Product Category</DropdownMenuItem></Link>
+                                        <Link to="/product">
+                                            <DropdownMenuItem>Product</DropdownMenuItem>
+                                        </Link>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+
+                                <Link to="">Manage Transaksi</Link>
 
 
-            {/*Menu Hamburg*/}
-            <div className="md:hidden">
-                <button className="text-white">
-                    <GiHamburgerMenu />
-                </button>
-            </div>
+                            </>
 
-            {/* Navigation links */}
-            <div className="hidden md:flex items-center space-x-4 text-white text-lg">
-                <a href="#" >Home</a>
-                {/* <div className="relative">
-                    <a href="#" className="text-gray-800 hover:text-blue-600 text-lg">Master Data Product</a>
-                    <div className="absolute top-full left-0 w-max bg-white border border-gray-300 rounded-lg shadow-md py-2">
-                        <a href="#" className="block px-4 py-2 text-gray-800 hover:text-blue-600">Category</a>
-                        <a href="#" className="block px-4 py-2 text-gray-800 hover:text-blue-600">Subcategory</a>
-                        <a href="#" className="block px-4 py-2 text-gray-800 hover:text-blue-600">Brand</a>
-                    </div>
-                </div> */}
-                <DropdownMenu>
-                    <DropdownMenuTrigger >Master Data</DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                        <Link to="/product-categories"><DropdownMenuItem>Product Category</DropdownMenuItem></Link>
+                        )}
+                        {showCustomerBoard && (
+                            <>
+                                <Link to="/product-categories">Transaksi</Link>
 
-                        <DropdownMenuItem>Product</DropdownMenuItem>
+                            </>
 
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                        )}
+                    </nav>
+                    <DropdownMenu >
+                        <DropdownMenuTrigger className="mr-5 hover:text-gray-900" >{currentUser?.username}</DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                            <Link to="/" onClick={logOut}>
+                                <DropdownMenuItem>Log Out</DropdownMenuItem></Link>
 
-                <a href="#" >Manage Transaksi</a>
-            </div>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
 
-        </nav></>
+                </div>
+            </header>
+        </>
     )
 }
 
