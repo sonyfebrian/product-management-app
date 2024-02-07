@@ -38,6 +38,8 @@ const ProductCategory = () => {
         (state: RootState) => state.productCategories.list.values
     );
 
+
+
     const isLoadingTable = useSelector(
         (state: RootState) => state.productCategories.list.isLoading
     );
@@ -52,7 +54,7 @@ const ProductCategory = () => {
         id: 0,
         name: "",
         active: false,
-        created_user: "",
+        created_user: "admin",
     });
 
     const [showValidation, setShowValidation] = useState<boolean>(false);
@@ -149,13 +151,13 @@ const ProductCategory = () => {
         <> <Navbar />
             <div className="min-h-screen bg-gradient-to-r from-rose-100 to-teal-100">
                 <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
-                    <div className="">
-                        <h1 className="text-xl font-semibold">Product Categories</h1>
-                    </div>
-                    <Card className="w-[350px]">
+                    <h2 className="text-3xl font-bold tracking-tight mb-2">Master Data Product Categories</h2>
+                    <Card className="w-full">
                         <CardHeader>
+                            {productCategory.id !== 0 ? (
+                                <CardDescription>Edit Product Categories</CardDescription>
+                            ) : <CardDescription>Create Product Categories</CardDescription>}
 
-                            <CardDescription>Create Product Categories</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <form>
@@ -172,15 +174,6 @@ const ProductCategory = () => {
                                     />
 
 
-                                    <Input type="text"
-                                        title="User"
-                                        name="created_user"
-                                        placeholder="Enter user here"
-                                        value={productCategory.created_user}
-                                        inputChange={handleInputChange}
-                                        showValidation={showValidation}
-                                        isRequired={true} />
-
 
                                     <Checkbox title="Active"
                                         name="active" inputChange={handleInputChange} value={productCategory.active} />
@@ -192,10 +185,10 @@ const ProductCategory = () => {
                         <CardFooter className="flex justify-between">
 
                             <Button onClick={submit}
-                                disabled={isSaving || isDeleting} >Submit</Button>
+                                disabled={isSaving || isDeleting} className="bg-blue-600" >Submit</Button>
                             {productCategory.id !== 0 && (
                                 <Button
-
+                                    className="bg-red-800"
                                     onClick={resetForm}
                                     disabled={isSaving || isDeleting}
                                 >Cancel </Button>
@@ -216,7 +209,7 @@ const ProductCategory = () => {
                                             {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
                                             <TableHeader className="bg-gray-50">
                                                 <TableRow >
-                                                    <TableHead>Name</TableHead>
+                                                    <TableHead>Product Category</TableHead>
                                                     <TableHead>Status</TableHead>
                                                     <TableHead>Create User</TableHead>
                                                     <TableHead></TableHead>
@@ -232,8 +225,8 @@ const ProductCategory = () => {
                                                             <TableCell>{d.created_user}</TableCell>
                                                             <TableCell className="space-x-3"><Button
                                                                 onClick={() => removeProduct(d.id)}
-                                                                disabled={isSaving || isDeleting} >Delete</Button><Button onClick={() => selectProduct(d)}
-                                                                    disabled={isSaving || isDeleting}>edit</Button></TableCell>
+                                                                disabled={isSaving || isDeleting} className="bg-red-800">Delete</Button><Button onClick={() => selectProduct(d)}
+                                                                    disabled={isSaving || isDeleting} className="bg-orange-400">Edit</Button></TableCell>
 
                                                         </TableRow>
                                                     );

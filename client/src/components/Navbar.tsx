@@ -56,7 +56,7 @@ const Navbar = () => {
 
                         {showAdminBoard && (
                             <>
-                                <Link to="home" className="mr-5 hover:text-gray-900">Home</Link>
+                                <Link to="/home" className="mr-5 hover:text-gray-900">Home</Link>
                                 <DropdownMenu>
                                     <DropdownMenuTrigger className="mr-5 hover:text-gray-900" >Master Data</DropdownMenuTrigger>
                                     <DropdownMenuContent>

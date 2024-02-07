@@ -1,4 +1,4 @@
-import { IProduct } from './../../types/product';
+import { IProduct} from './../../types/product';
 import { createSlice } from "@reduxjs/toolkit";
 import { addProduct, updateProduct, deleteProduct, getProduct} from "../../services/product";
 
@@ -27,7 +27,7 @@ const initialState: ProductState = {
 };
 
 export const productSlice = createSlice({
-    name: "productCategory",
+    name: "product",
     initialState,
     reducers: {
         clearSuccessMessage: () => {

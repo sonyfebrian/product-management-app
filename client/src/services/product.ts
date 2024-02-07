@@ -6,7 +6,8 @@ import { IProduct } from '../types/product';
 export const getProduct = createAsyncThunk("product/getProduct", async () => {
     try {
         const response = await API.get("products",  { headers: authHeader() })
-        return response.data
+        
+        return response.data.products
     } catch (error) {
         console.log(error)
     }
@@ -24,7 +25,7 @@ export const addProduct = createAsyncThunk("product/addProduct", async (productC
 export const updateProduct = createAsyncThunk("product/updateProduct",
     async (product: IProduct) => {
         try {
-            const response = await API.put(`products-categories/${product.id}`, product, { headers: authHeader() });
+            const response = await API.put(`products/${product.id}`, product, { headers: authHeader() });
             return response.data
         } catch (error) {
             console.log(error)
@@ -33,7 +34,7 @@ export const updateProduct = createAsyncThunk("product/updateProduct",
 
     export const deleteProduct = createAsyncThunk("product/deleteProduct", async (id: number) => {
         try {
-            const response = await API.delete(`products-categories/${id}`, { headers: authHeader() })
+            const response = await API.delete(`products/${id}`, { headers: authHeader() })
             return response.data
         } catch (error) {
             console.log(error)

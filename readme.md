@@ -56,7 +56,7 @@ This project uses PostgreSQL as the database management system. Follow the steps
 
 **Install PostgreSQL Library for Node.js:** To interact with the PostgreSQL database from your Node.js backend, you need to install the PostgreSQL library for Node.js. You can use pg library for this purpose.
 
-** Configure Database Connection in Backend: ** Create a configuration file or module that contains the PostgreSQL database connection information. You can store this connection information in environment variables or in a separate configuration file.
+**Configure Database Connection in Backend:** Create a configuration file or module that contains the PostgreSQL database connection information. You can store this connection information in environment variables or in a separate configuration file.
 
 ```bash
 // server/config/db.config.js
