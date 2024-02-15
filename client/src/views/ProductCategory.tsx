@@ -151,7 +151,7 @@ const ProductCategory = () => {
         <> <Navbar />
             <div className="min-h-screen bg-gradient-to-r from-rose-100 to-teal-100">
                 <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
-                    <h2 className="text-3xl font-bold tracking-tight mb-2">Master Data Product Categories</h2>
+                    <h2 className="text-2xl font-bold tracking-tight mb-2 text-sky-700">Master Data Product Categories</h2>
                     <Card className="w-full">
                         <CardHeader>
                             {productCategory.id !== 0 ? (
