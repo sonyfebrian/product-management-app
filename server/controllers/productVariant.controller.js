@@ -7,11 +7,11 @@ exports.createProductVariant = (req, res) => {
     product_id,
     code,
     name,
-    image_location,
     qty,
     price,
     active,
     created_user,
+    image_location,
   } = req.body;
 
   if (!product_id) {

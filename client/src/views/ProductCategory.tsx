@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/card"
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/Checkbox"
-import { Input } from "@/components/Input";
+import { CustomInput } from "@/components/CustomInput";
 import Swal from 'sweetalert2'
 import 'sweetalert2/src/sweetalert2.scss'
 
@@ -162,7 +162,7 @@ const ProductCategory = () => {
                         <CardContent>
                             <form>
                                 <div className="grid w-full items-center gap-4">
-                                    <Input
+                                    <CustomInput
                                         type="text"
                                         title="Name"
                                         name="name"

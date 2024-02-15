@@ -1,6 +1,6 @@
 import { ChangeEvent } from "react";
 
-export const Input = ({
+export const CustomInput = ({
     name,
     value,
     inputChange,
@@ -11,12 +11,12 @@ export const Input = ({
     isRequired,
 }: {
     name: string;
-    value: string;
+    value: string | number;
     inputChange: (event: ChangeEvent<HTMLInputElement>) => void;
     placeholder?: string;
     title: string;
     showValidation?: boolean;
-    type: string;
+    type: "text" | "number";
     isRequired?: boolean;
 }) => {
     const showValidationUi = value === "" && showValidation;

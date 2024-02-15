@@ -7,6 +7,7 @@ import ProductCategory from "./views/ProductCategory";
 import Product from "./views/Product";
 
 
+
 function App() {
   return (
     <>
@@ -15,6 +16,7 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/product-categories" element={<ProductCategory />} />
         <Route path="/product" element={<Product />} />
+
       </Routes>
 
     </>

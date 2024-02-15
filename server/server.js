@@ -2,15 +2,20 @@ const express = require("express");
 const cors = require("cors");
 var bcrypt = require("bcryptjs");
 const app = express();
+const morgan = require("morgan");
 
 var corsOptions = {
-  origin: "http://localhost:8081",
+  origin: "http://localhost:5173",
 };
+
+global.__basedir = __dirname;
 
 app.use(cors(corsOptions));
 
 // parse requests of content-type - application/json
 app.use(express.json());
+
+app.use(morgan("dev"));
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
@@ -44,6 +49,7 @@ require("./routes/product.routes")(app);
 require("./routes/productCategory.routes")(app);
 require("./routes/productVariant.routes")(app);
 require("./routes/transaction.routes")(app);
+require("./routes/file.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
@@ -116,26 +122,52 @@ async function initial() {
       }),
     ]);
 
-    await Promise.all([
-      ProductVariant.create({
-        product_id: product1.id,
-        code: "LV001",
-        name: "Laptop Variant 1",
-        qty: 10,
-        price: 1200.0,
-        active: true,
-        created_user: "admin",
-      }),
-      ProductVariant.create({
-        product_id: product2.id,
-        code: "TS001",
-        name: "T-shirt Variant 1",
-        qty: 20,
-        price: 25.0,
-        active: true,
-        created_user: "admin",
-      }),
-    ]);
+    // await Promise.all([
+    //   ProductVariant.create({
+    //     product_id: product1.id,
+    //     code: "LV001",
+    //     name: "Laptop Variant 1",
+    //     image_location:
+    //       "https://fastly.picsum.photos/id/6/5000/3333.jpg?hmac=pq9FRpg2xkAQ7J9JTrBtyFcp9-qvlu8ycAi7bUHlL7I",
+    //     qty: 10,
+    //     price: 1200.0,
+    //     active: true,
+    //     created_user: "admin",
+    //   }),
+    //   ProductVariant.create({
+    //     product_id: product2.id,
+    //     code: "TS001",
+    //     name: "T-shirt Variant 1",
+    //     image_location:
+    //       "https://fastly.picsum.photos/id/63/5000/2813.jpg?hmac=HvaeSK6WT-G9bYF_CyB2m1ARQirL8UMnygdU9W6PDvM",
+    //     qty: 20,
+    //     price: 25.0,
+    //     active: true,
+    //     created_user: "admin",
+    //   }),
+    // ]);
+    const productVariant1 = await ProductVariant.create({
+      product_id: product1.id,
+      code: "LV001",
+      name: "Laptop Variant 1",
+      image_location:
+        "https://fastly.picsum.photos/id/6/5000/3333.jpg?hmac=pq9FRpg2xkAQ7J9JTrBtyFcp9-qvlu8ycAi7bUHlL7I",
+      qty: 1055,
+      price: 1200,
+      active: true,
+      created_user: "admin",
+    });
+    const productVariant2 = await ProductVariant.create({
+      product_id: product1.id,
+      code: "LV002",
+      name: "Laptop Variant 2",
+      image_location:
+        "https://fastly.picsum.photos/id/63/5000/2813.jpg?hmac=HvaeSK6WT-G9bYF_CyB2m1ARQirL8UMnygdU9W6PDvM",
+      qty: 10,
+      price: 12,
+      active: true,
+      created_user: "admin",
+    });
 
     const transaction1 = await Transaction.create({
       transaction_no: "TRN123456",
@@ -146,8 +178,7 @@ async function initial() {
 
     await TransactionDetail.create({
       transaction_id: transaction1.id,
-      product_variant_id: 1,
-      price: 50.0,
+      product_variant_id: productVariant1.id,
       qty: 2,
       subtotal: 100.0,
       active: true,
@@ -163,8 +194,7 @@ async function initial() {
 
     await TransactionDetail.create({
       transaction_id: transaction2.id,
-      product_variant_id: 2,
-      price: 75.0,
+      product_variant_id: productVariant2.id,
       qty: 2,
       subtotal: 150.0,
       active: true,

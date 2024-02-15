@@ -1,5 +1,4 @@
 import Navbar from "@/Navbar";
-import { Button } from "@/components/ui/button"
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -9,8 +8,13 @@ import {
     Tooltip,
     Legend,
 } from 'chart.js';
-import { useState } from 'react';
-import { Bar } from 'react-chartjs-2';
+import Chart from "../components/Chart"
+import { useState, useEffect } from 'react';
+import * as AuthService from "../services/auth"
+import { useSelector } from "react-redux";
+import { RootState, useAppDispatch } from "../store/store";
+import { IProductVariant } from "../types/productVariant";
+import { getProductVariant } from "../services/productVariantServices";
 
 ChartJS.register(
     CategoryScale,
@@ -22,45 +26,58 @@ ChartJS.register(
 );
 
 const Home = () => {
-    const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-    const [data, setData] = useState({
-        labels: labels,
-        datasets: [{
-            label: 'Expenses by Month',
-            data: [65, 59, 80, 81, 56, 55, 40],
-            backgroundColor: [
-                'rgb(153, 102, 255)'
-            ],
-            borderColor: [
-                'rgb(153, 102, 255)'
-            ],
-            borderWidth: 1
-        }]
-    });
+    const dispatch = useAppDispatch();
 
-    // Function to update data with new dataset
-    const updateData = () => {
-        setData({
-            ...data,
-            datasets: [{
-                ...data.datasets[0],
-                data: [1, 2, 4, 8, 16, 32, 64]
-            }]
-        });
-    };
+    const [showCustomerBoard, setShowCustomerBoard] = useState<boolean>(false);
+    const [showAdminBoard, setShowAdminBoard] = useState<boolean>(false);
+
+
+    useEffect(() => {
+        const user = AuthService.getCurrentUser();
+        if (user) {
+
+            setShowCustomerBoard(user.roles.includes("ROLE_CUSTOMER"));
+            setShowAdminBoard(user.roles.includes("ROLE_ADMINISTRATOR"));
+        }
+        dispatch(getProductVariant());
+    }, [dispatch]);
+    const productvariantList = useSelector(
+        (state: RootState) => state.productVariant.list.values
+    );
 
     return (
         <>
             <Navbar />
-            <div className="container px-5 py-10 mx-auto flex flex-wrap">
-                <div className="lg:w-2/3 mx-auto">
-                    <Button onClick={updateData}>Update Data</Button>
-                    <Bar data={data} />
+            {showAdminBoard && (
+                <Chart />
+            )}
+            {showCustomerBoard && (
+                <>
+                    <section className="text-gray-600   body-font">
+                        <div className="container px-5 py-24 mx-auto bg-gradient-to-r from-rose-100 to-teal-100">
+                            <div className="flex flex-wrap  space-x-8">
+                                {productvariantList?.map((d: IProductVariant, index: number) => (
+                                    <div key={index} className="lg:w-1/4 md:w-1/2 p-4 w-full rounded-lg bg-white dark:bg-slate-800 shadow-md duration-300 hover:scale-105 hover:shadow-lg">
+                                        <a className="block relative h-48 rounded overflow-hidden">
+                                            <img
+                                                alt="ecommerce"
+                                                className="object-cover object-center w-full h-full block"
+                                                src={d.image_location}
+                                            />
+                                        </a>
+                                        <div className="mt-4">
+                                            <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">CATEGORY</h3>
+                                            <h2 className="text-gray-900 title-font text-lg font-medium">{d.name}</h2>
+                                            <p className="mt-1">{d.price}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+                </>
 
-                </div>
-            </div>
-
-
+            )}
         </>
     )
 }

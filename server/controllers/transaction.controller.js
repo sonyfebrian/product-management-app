@@ -45,7 +45,16 @@ exports.getAllTransactionDetails = (req, res) => {
     include: [
       {
         model: ProductVariant,
-        attributes: ["price"], // Ambil hanya kolom price dari ProductVariant
+        attributes: [
+          ["id", "product_variant_id"], // Mengambil kolom id dan mengganti nama menjadi product_variant_id
+          "price", // Ambil kolom price
+          "name",
+          "image_location",
+        ],
+      },
+      {
+        model: Transaction,
+        attributes: [["id", "transaction_id"]], // Ambil kolom id dari tabel Transaction
       },
     ],
   })

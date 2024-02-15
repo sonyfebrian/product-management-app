@@ -54,6 +54,14 @@ const Login = () => {
         <><div className="flex h-screen">
             <div className="hidden lg:flex items-center justify-center flex-1 bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 text-black">
 
+                <div className="relative z-20 mt-auto">
+                    <blockquote className="space-y-2 text-white">
+                        <p className="text-lg">
+                            &ldquo;Effective product management is not just about building the right features; it's about solving the right problems for your users and creating meaningful experiences that resonate in their lives&rdquo;
+                        </p>
+                        <footer className="text-sm">Anonim</footer>
+                    </blockquote>
+                </div>
             </div>
 
             <div className="w-full bg-gradient-to-r from-rose-100 to-teal-100 lg:w-1/2 flex items-center justify-center">

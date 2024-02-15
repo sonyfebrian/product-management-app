@@ -36,13 +36,7 @@ db.transactionDetail = require("../models/transactionDetail.model.js")(
   sequelize,
   Sequelize
 );
-
-// db.role.belongsToMany(db.user, {
-//   through: "user_roles",
-// });
-// db.user.belongsToMany(db.role, {
-//   through: "user_roles",
-// });
+db.image = require("../models/images.model.js")(sequelize, Sequelize);
 
 db.role.belongsToMany(db.user, { through: "user_roles", foreignKey: "roleId" });
 db.user.belongsToMany(db.role, { through: "user_roles", foreignKey: "userId" });
